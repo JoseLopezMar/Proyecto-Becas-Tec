@@ -1,0 +1,34 @@
+<div class="overlay" *ngIf="!load">
+    <div class="spinner ">
+        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
+      </div>
+</div>
+<div *ngIf="load">
+<mat-accordion multi="true" *ngIf="postulantes.length > 0">
+    <mat-expansion-panel *ngFor="let postulante of postulantes">
+        <mat-expansion-panel-header>
+            <strong>{{postulante.nombre}} {{postulante.apellidoP}} {{postulante.apellidoM}}</strong>
+        </mat-expansion-panel-header>
+        <br>
+        <p><strong>Nombre(s):</strong> {{postulante.nombre}}</p>
+        <p><strong>Apellido paterno:</strong> {{postulante.apellidoP}}</p>
+        <p><strong>Apellido materno:</strong> {{postulante.apellidoM}}</p>
+        <p><strong>CURP:</strong> {{postulante.curp}}</p>
+        <p><strong>Dirección:</strong> {{postulante.domicilio}}</p>
+        <p><strong>Teléfono:</strong> {{postulante.telefono}}</p>
+        <mat-action-row>
+            <a mat-button color="primary" [routerLink]="['/postulantes/edit', postulante.id]">Editar</a>
+            <button mat-button color="warn" (click)="deletePostulante(postulante.id)">Eliminar</button>
+        </mat-action-row>
+
+    </mat-expansion-panel>
+</mat-accordion>
+<h3 
+    style="background: #bdf0fa; 
+    color: #0c92ac; font-weight: bold; 
+    padding: 15px; border: 2px solid #abecf9; 
+    border-radius: 6px;"
+    *ngIf="postulantes.length <= 0">
+    No hay postulantes agregados
+</h3>
+</div>

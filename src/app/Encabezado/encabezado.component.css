@@ -1,0 +1,33 @@
+mat-toolbar{
+    background-color: white;
+}
+
+ body{
+  font-family: sans-serif;
+ }
+
+ ul{
+  list-style: none;
+  padding: 0%;
+  margin: 0%;
+  margin-left: 10px;
+  line-height: 30px;
+ }
+
+ li{
+  width: 260px;
+  display: inline-block;
+ }
+
+ a{
+  color: rgb(66, 63, 63);
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  transition: all .30s;
+  margin: 30px;
+ }
+ a:hover{
+  color: #0066FF
+ }
+

@@ -1,0 +1,48 @@
+<div class="overlay" *ngIf="!load">
+    <div class="spinner ">
+        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
+      </div>
+</div>
+<h1 *ngIf="load" style="background: #f7f5f5; font-weight: bold; padding: 15px; 
+border-left:8px solid #0099ff; border-right:8px solid #ff00a2; 
+border-top-left-radius:8px; border-bottom-left-radius:8px;"> ¡INGRESA AQUÍ LOS DATOS!</h1>
+<mat-card *ngIf="load">
+    <form (submit)="onSaveBeca(becaForm)" #becaForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text" name="nombre" [ngModel]="beca?.nombre" required #nombre="ngModel" placeholder="Nombre de la Convocatoria">
+            <mat-error *ngIf="nombre.invalid">Ingresa el nombre de la convocatoria</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" name="monto" [ngModel]="beca?.monto" required #monto="ngModel" placeholder="Monto">
+            <mat-error *ngIf="monto.invalid">Ingresa el monto que se le dará a los becarios</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" name="fechaApertura" [ngModel]="beca?.fechaApertura" required #fechaApertura="ngModel" placeholder="Fecha de Apertura">
+            <mat-error *ngIf="fechaApertura.invalid">Ingresa la fecha de apertura de la beca</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" name="fechaCierre" [ngModel]="beca?.fechaCierre" required #fechaCierre="ngModel" placeholder="Fecha de Cierre">
+            <mat-error *ngIf="fechaCierre.invalid">Ingresa la fecha de cierre de la beca</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+        <input matInput type="number" name="limitePostulantes" [ngModel]="beca?.limitePostulantes" required #limitePostulantes="ngModel" placeholder="Límite de Postulantes">
+        <mat-error *ngIf="limitePostulantes.invalid">Ingresa el límite de postulantes permitidos para la beca</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" name="limiteAceptados" [ngModel]="beca?.limiteAceptados" required #limiteAceptados="ngModel" placeholder="Límite de Aceptados">
+            <mat-error *ngIf="limiteAceptados.invalid">Ingresa el límite de becarios aceptados para la beca</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" name="nivelEducativo" [ngModel]="beca?.nivelEducativo" required #nivelEducativo="ngModel" placeholder="Nivel Educativo">
+            <mat-error *ngIf="nivelEducativo.invalid">Ingresa el nivel educativo que deben tener los postulantes</mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="accent" type="submit">
+                Guardar información
+            </button>
+            <button mat-raised-button color="primary" type="submit" (click)="limpiar(becaForm)">
+                Limpiar información
+            </button>
+        </div>
+    </form>
+</mat-card>

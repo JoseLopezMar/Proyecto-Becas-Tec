@@ -1,0 +1,35 @@
+<div class="overlay" *ngIf="!load">
+    <div class="spinner ">
+        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
+      </div>
+
+</div>
+<div *ngIf="load">
+<mat-accordion multi="true" *ngIf="becas.length > 0">
+    <mat-expansion-panel *ngFor="let beca of becas">
+        <mat-expansion-panel-header>
+            <strong>{{beca.nombre}}</strong>
+        </mat-expansion-panel-header>
+        <br>
+        <p><strong>Nombre:</strong> {{beca.nombre}}</p>
+        <p><strong>Monto:</strong> {{beca.monto}}</p>
+        <p><strong>Fecha Apertura:</strong> {{beca.fechaApertura}}</p>
+        <p><strong>Fecha Cierre:</strong> {{beca.fechaCierre}}</p>
+        <p><strong>Límite Postulantes:</strong> {{beca.limitePostulantes}}</p>
+        <p><strong>Límite Aceptados:</strong> {{beca.limiteAceptados}}</p>
+        <p><strong>Nivel Educativo:</strong> {{beca.nivelEducativo}}</p>
+        <mat-action-row>
+            <a mat-button color="primary" [routerLink]="['/becas/edit', beca.id]">Editar</a>
+            <button mat-button color="warn" (click)="deleteBeca(beca.id)">Eliminar</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+</mat-accordion>
+<h3 
+    style="background: #bdf0fa; 
+    color: #0c92ac; font-weight: bold; 
+    padding: 15px; border: 2px solid #abecf9; 
+    border-radius: 6px;"
+    *ngIf="becas.length <= 0">
+    No hay Becas Agregadas
+</h3>
+</div>

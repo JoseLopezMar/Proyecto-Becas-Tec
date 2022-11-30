@@ -23,7 +23,9 @@ export class PostulanteService{
                     curp: postulante.curp,
                     domicilio: postulante.domicilio,
                     telefono: postulante.telefono,
-                    idUsuario: postulante.idUsuario
+                    tipoUsuario: postulante.tipoUsuario,
+                    correo: postulante.correo,
+                    
                 }
             });
         }))
@@ -33,21 +35,21 @@ export class PostulanteService{
         });
     }
 
-    getNombreUsuario(id: string){
-        return this.http.get<{_id: string, nombre: string, contrasena: string, correo: string, tipoUsuario: string}>('http://localhost:3000/api.becas/usuario/'+id);
-    }
+    //getNombreUsuario(id: string){
+        //return this.http.get<{_id: string, nombre: string, contrasena: string, correo: string, tipoUsuario: string}>('http://localhost:3000/api.becas/usuario/'+id);
+    //}
 
     getPostulantesUpdateListener(){
         return this.postulantesUpdate.asObservable();
     }
 
     getPostulante(id: string) {
-        return this.http.get<{_id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, domicilio: string, telefono: string, idUsuario: string}>('http://localhost:3000/api.becas/postulante/'+id);
+        return this.http.get<{_id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, domicilio: string, telefono: string, idUsuario: string, correo: string, contrasena: string, tipoUsuario: string }>('http://localhost:3000/api.becas/postulante/'+id);
     }
 
-    addPostulante(id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, 
+    addPostulante(id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, correo: string, contrasena, tipoUsuario: string, 
         domicilio: string, telefono: string){
-        const postulante: Postulante = {id: null, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, curp: curp, 
+        const postulante: Postulante = {id: null, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, curp: curp, correo: correo, contrasena: contrasena, tipoUsuario: tipoUsuario,
             domicilio: domicilio, telefono: telefono}
         this.http.post<{message: string, postulanteId: string}>('http://localhost:3000/api.becas/postulante', postulante).
         subscribe((responseData) => {
@@ -58,9 +60,9 @@ export class PostulanteService{
         });
     }
 
-    updatePostulante(id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, 
+    updatePostulante(id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, correo: string, contrasena, tipoUsuario: string,
         domicilio: string, telefono: string) {
-        const postulante: Postulante = {id: id, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, curp: curp, 
+        const postulante: Postulante = {id: id, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, curp: curp, correo: correo, contrasena: contrasena, tipoUsuario: tipoUsuario,
             domicilio: domicilio, telefono: telefono}
         this.http.put(`http://localhost:3000/api.becas/postulante/${id}`, postulante)
         .subscribe(response => {

@@ -1,6 +1,5 @@
 const express = require('express');
 const Postulante = require('../models/postulante');
-const Usuario = require('../models/usuario');
 const Postulacion = require('../models/postulacion');
 const Beca = require('../models/beca');
 const router = express.Router();
@@ -9,6 +8,9 @@ const router = express.Router();
 
 router.post('/postulante',(req, res, next) => {
     const postulante = new Postulante({
+        contrasena: req.body.contrasena,
+        correo: req.body.correo,
+        tipoUsuario: req.body.tipoUsuario,
         nombre: req.body.nombre,
         apellidoP: req.body.apellidoP,
         apellidoM: req.body.apellidoM,
@@ -29,6 +31,9 @@ router.post('/postulante',(req, res, next) => {
 router.put('/postulante/:id', (req, res, next) => {
     const postulante = new Postulante({
         _id: req.body.id,
+        contrasena: req.body.contrasena,
+        correo: req.body.correo,
+        tipoUsuario: req.body.tipoUsuario,
         nombre: req.body.nombre,
         apellidoP: req.body.apellidoP,
         apellidoM: req.body.apellidoM,
@@ -71,68 +76,70 @@ router.delete('/postulante/:id', (req, res, next) => {
 
 //------------------------------------------ USUARIOS ------------------------------------------
 
-router.post('/usuario',(req, res, next) => {
-    const usuario = new Usuario({
-        nombre: req.body.nombre,
-        contrasena: req.body.contrasena,
-        correo: req.body.correo,
-        tipoUsuario: req.body.tipoUsuario
-    });
-    usuario.save().then(createdUsuario => {
-        res.status(201).json(
-            {
-                message: 'Usuario agregado correctamente',
-                usuarioId: createdUsuario._id
-            }
-        )
-    });
-})
-
-router.put('/usuario/:id', (req, res, next) => {
-    const usuario = new Usuario({
-        _id: req.body.id,
-        nombre: req.body.nombre,
-        contrasena: req.body.contrasena,
-        correo: req.body.correo,
-        tipoUsuario: req.body.tipoUsuario
-    });
-    Usuario.updateOne({_id: req.params.id}, usuario).then(result => {
-        res.status(200).json({message: 'Usuario actualizado correctamente'})
-    });
-});
-
-router.get('/usuario', (req, res, next) => {
-    Usuario.find().then(documents => {
-        res.status(200).json(
-            {message: '¡Usuarios expuestos con exito!', usuarios: documents}
-        )
-    });
-});
-
-router.get('/usuario/:id', (req, res, next) => {
-    Usuario.findById(req.params.id).then(usuario  => {
-        if (usuario) {
-            res.status(200).json(usuario);
-        } else {
-            res.status(404).json({message: 'Usuario no encontrado'});
-        }
-    })
-});
-
-router.delete('/usuario/:id', (req, res, next) => {
-    Usuario.deleteOne({_id: req.params.id}).then(result => {
-        res.status(201).json(
-            {
-                message: 'Usuario borrado correctamente'
-            }
-        )
-    });
-});
+//router.post('/usuario',(req, res, next) => {
+//    const usuario = new Usuario({
+//        nombre: req.body.nombre,
+//        contrasena: req.body.contrasena,
+//        correo: req.body.correo,
+//        tipoUsuario: req.body.tipoUsuario
+//    });
+//    usuario.save().then(createdUsuario => {
+//        res.status(201).json(
+//            {
+//                message: 'Usuario agregado correctamente',
+//                usuarioId: createdUsuario._id
+//            }
+//        )
+//    });
+//})
+//
+//router.put('/usuario/:id', (req, res, next) => {
+//    const usuario = new Usuario({
+//        _id: req.body.id,
+//        nombre: req.body.nombre,
+//        contrasena: req.body.contrasena,
+//        correo: req.body.correo,
+//        tipoUsuario: req.body.tipoUsuario
+//    });
+//    Usuario.updateOne({_id: req.params.id}, usuario).then(result => {
+//        res.status(200).json({message: 'Usuario actualizado correctamente'})
+//    });
+//});
+//
+//router.get('/usuario', (req, res, next) => {
+//    Usuario.find().then(documents => {
+//        res.status(200).json(
+//            {message: '¡Usuarios expuestos con exito!', usuarios: documents}
+//        )
+//    });
+//});
+//
+//router.get('/usuario/:id', (req, res, next) => {
+//    Usuario.findById(req.params.id).then(usuario  => {
+//        if (usuario) {
+//            res.status(200).json(usuario);
+//        } else {
+//            res.status(404).json({message: 'Usuario no encontrado'});
+//        }
+//    })
+//});
+//
+//router.delete('/usuario/:id', (req, res, next) => {
+//    Usuario.deleteOne({_id: req.params.id}).then(result => {
+//        res.status(201).json(
+//            {
+//                message: 'Usuario borrado correctamente'
+//            }
+//        )
+//    });
+//});
 
 //------------------------------------------ POSTULACIONES ------------------------------------------
 
 router.post('/postulacion',(req, res, next) => {
     const postulacion = new Postulacion({
+        idPostulante: req.body.idPostulante, 
+        idBeca: req.body.idBeca,
         postulante: req.body.postulante,
         beca: req.body.beca,
         ingresoMensual: req.body.ingresoMensual,
@@ -154,6 +161,8 @@ router.post('/postulacion',(req, res, next) => {
 router.put('/postulacion/:id', (req, res, next) => {
     const postulacion = new Postulacion({
         _id: req.body.id,
+        idPostulante: req.body.idPostulante, 
+        idBeca: req.body.idBeca,
         postulante: req.body.postulante,
         beca: req.body.beca,
         ingresoMensual: req.body.ingresoMensual,

@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const postulacionesSchema = mongoose.Schema({
-    //idUsuario: {type: String, required: true}, 
-    //idBeca: {type: String, required: true},
+    idPostulante: {type: String, required: true}, 
+    idBeca: {type: String, required: true},
     postulante: {type: String, required: true}, 
     beca: {type: String, required: true},
     ingresoMensual: {type: Number, required: true},

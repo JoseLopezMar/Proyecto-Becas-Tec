@@ -3,10 +3,33 @@ const Postulante = require('../models/postulante');
 const Postulacion = require('../models/postulacion');
 const Beca = require('../models/beca');
 const router = express.Router();
+const multer = require('multer');
+
+const MIME_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg',
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const isValid = MIME_TYPE_MAP[file.mimetype];
+        let error = new Error('Extensión no válida');
+        if (isValid) {
+            error = null;
+        }
+        cb(error, "Backend/images")
+    },
+    filename: (req, file, cb) => {
+        const name = file.originalname.toLowerCase().split(' ').join('-');
+        const ext = MIME_TYPE_MAP[file.mimetype];
+        cb(null, name + '-' + Date.now() + '.' + ext);
+    }
+});
 
 //------------------------------------------ POSTULANTES ------------------------------------------
 
-router.post('/postulante',(req, res, next) => {
+router.post('/postulante', (req, res, next) => {
     const postulante = new Postulante({
         contrasena: req.body.contrasena,
         correo: req.body.correo,
@@ -206,27 +229,40 @@ router.delete('/postulacion/:id', (req, res, next) => {
 
 //------------------------------------------ BECAS ------------------------------------------
 
-router.post('/beca',(req, res, next) => {
+router.post('/beca', multer({storage: storage}).single("image"), (req, res, next) => {
+    const url = req.protocol + '://' + req.get("host");
     const beca = new Beca({
         nombre: req.body.nombre,
         monto: req.body.monto,
         fechaApertura: req.body.fechaApertura,
         fechaCierre: req.body.fechaCierre,
         limitePostulantes: req.body.limitePostulantes,
+        postulantesRegistrados: 0,
         limiteAceptados: req.body.limiteAceptados,
-        nivelEducativo: req.body.nivelEducativo
+        postulantesAceptados: 0,
+        nivelEducativo: req.body.nivelEducativo,
+        rutaImagen: url + "/images/" + req.file.filename,
+        estado: 1
     });
     beca.save().then(createdBeca => {
         res.status(201).json(
             {
                 message: 'Beca agregada correctamente',
-                becaId: createdBeca._id
+                beca: {
+                    ...createdBeca,
+                    id: createdBeca._id
+                }
             }
         )
     });
 })
 
-router.put('/beca/:id', (req, res, next) => {
+router.put('/beca/:id', multer({storage: storage}).single("image"), (req, res, next) => {
+    let rutaImagen = req.body.rutaImagen;
+    if (req.file) {
+        const url = req.protocol + '://' + req.get("host");
+        rutaImagen = url + "/images/" + req.file.filename
+    }
     const beca = new Beca({
         _id: req.body.id,
         nombre: req.body.nombre,
@@ -234,8 +270,12 @@ router.put('/beca/:id', (req, res, next) => {
         fechaApertura: req.body.fechaApertura,
         fechaCierre: req.body.fechaCierre,
         limitePostulantes: req.body.limitePostulantes,
+        postulantesRegistrados: req.body.postulantesRegistrados,
         limiteAceptados: req.body.limiteAceptados,
-        nivelEducativo: req.body.nivelEducativo
+        postulantesAceptados: req.body.postulantesAceptados,
+        nivelEducativo: req.body.nivelEducativo,
+        rutaImagen: rutaImagen,
+        estado: req.body.estado
     });
     Beca.updateOne({_id: req.params.id}, beca).then(result => {
         res.status(200).json({message: 'Beca actualizada correctamente'})

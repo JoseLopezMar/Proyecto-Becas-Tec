@@ -1,41 +1,69 @@
-<div class="overlay" *ngIf="!load">
-    <div class="spinner ">
-        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
-      </div>
-</div>
-<h1 *ngIf="load" style="background: #f7f5f5; font-weight: bold; padding: 15px; 
-border-left:8px solid #0099ff; border-right:8px solid #ff00a2; 
-border-top-left-radius:8px; border-bottom-left-radius:8px;"> ¡INGRESA AQUÍ LOS DATOS!</h1>
-<mat-card *ngIf="load">
-    <form (submit)="onSaveBeca(becaForm)" #becaForm="ngForm">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<h1 class="title" *ngIf="!isLoading && mode === 'create'"> ¡INGRESA AQUÍ LOS DATOS DE LA NUEVA BECA!</h1>
+<h1 class="title" *ngIf="!isLoading && mode === 'edit'"> ¡MODIFICA AQUÍ LOS DATOS DE LA BECA SELECCIONADA!</h1>
+<mat-card>
+    <form [formGroup]="form" (submit)="onSaveBeca()" *ngIf="!isLoading">
         <mat-form-field>
-            <input matInput type="text" name="nombre" [ngModel]="beca?.nombre" required #nombre="ngModel" placeholder="Nombre de la Convocatoria">
-            <mat-error *ngIf="nombre.invalid">Ingresa el nombre de la convocatoria</mat-error>
+            <input matInput type="text" formControlName="nombre" placeholder="Nombre de la Beca">
+            <mat-error *ngIf="form.get('nombre').invalid">Ingresa el nombre de la beca</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="number" name="monto" [ngModel]="beca?.monto" required #monto="ngModel" placeholder="Monto">
-            <mat-error *ngIf="monto.invalid">Ingresa el monto que se le dará a los becarios</mat-error>
+            <input matInput type="number" formControlName="monto" placeholder="Monto">
+            <mat-error *ngIf="form.get('monto').invalid">Ingresa el monto que se le dará a los becarios</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" name="fechaApertura" [ngModel]="beca?.fechaApertura" required #fechaApertura="ngModel" placeholder="Fecha de Apertura">
-            <mat-error *ngIf="fechaApertura.invalid">Ingresa la fecha de apertura de la beca</mat-error>
+            <input id="fecApe" matInput type="date" formControlName="fechaApertura" placeholder="Fecha de Apertura">
+            <mat-error *ngIf="form.get('fechaApertura').invalid">Ingresa la fecha de apertura de la beca</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" name="fechaCierre" [ngModel]="beca?.fechaCierre" required #fechaCierre="ngModel" placeholder="Fecha de Cierre">
-            <mat-error *ngIf="fechaCierre.invalid">Ingresa la fecha de cierre de la beca</mat-error>
+            <input id="fecCie" matInput type="date" formControlName="fechaCierre" placeholder="Fecha de Cierre">
+            <mat-error *ngIf="form.get('fechaCierre').invalid">Ingresa la fecha de cierre de la beca</mat-error>
         </mat-form-field>
         <mat-form-field>
-        <input matInput type="number" name="limitePostulantes" [ngModel]="beca?.limitePostulantes" required #limitePostulantes="ngModel" placeholder="Límite de Postulantes">
-        <mat-error *ngIf="limitePostulantes.invalid">Ingresa el límite de postulantes permitidos para la beca</mat-error>
+            <input id="limPos" matInput type="number" formControlName="limitePostulantes" placeholder="Límite de Postulantes">
+            <mat-error *ngIf="form.get('limitePostulantes').invalid">Ingresa el límite de postulantes permitidos para la beca</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="number" name="limiteAceptados" [ngModel]="beca?.limiteAceptados" required #limiteAceptados="ngModel" placeholder="Límite de Aceptados">
-            <mat-error *ngIf="limiteAceptados.invalid">Ingresa el límite de becarios aceptados para la beca</mat-error>
+            <input id="limAce" matInput type="number" formControlName="limiteAceptados" placeholder="Límite de Aceptados">
+            <mat-error *ngIf="form.get('limiteAceptados').invalid">Ingresa el límite de podtulantes aceptados para la beca</mat-error>
         </mat-form-field>
+
+        <!--div class="content-select">
+            <select formControlName="nivelEducativo"> 
+                <option value="Prescolar" selected>Prescolar</option>
+                <option value="Primaria">Primaria</option>
+                <option value="Secundaria">Secundaria</option>
+                <option value="Preparatoria">Preparatoria</option>
+                <option value="Universidad">Universidad</option>
+                <option value="Postgrado">Postgrado</option>
+            </select>
+            <i></i>
+        </div--> 
+
         <mat-form-field>
-            <input matInput type="text" name="nivelEducativo" [ngModel]="beca?.nivelEducativo" required #nivelEducativo="ngModel" placeholder="Nivel Educativo">
-            <mat-error *ngIf="nivelEducativo.invalid">Ingresa el nivel educativo que deben tener los postulantes</mat-error>
+            <input matInput type="text" formControlName="nivelEducativo" placeholder="Nivel Educativo">
+            <mat-error *ngIf="form.get('nivelEducativo').invalid">Ingresa el nivel educativo que deben tener los postulantes</mat-error>
         </mat-form-field>
+        <mat-form-field *ngIf="mode === 'edit'">
+            <input id="idEstado" matInput type="number" formControlName="estado" placeholder="Estado">
+            <mat-error *ngIf="form.get('estado').invalid">Ingresa el estado actual en el que se encuentra la beca (1 = Activa y 0 = Inactiva)</mat-error>
+        </mat-form-field>
+        <div id="contenedor">
+            <div class="image-preview" *ngIf="imageNull !== '' && (!form.get('image').valid || mode === 'edit')">
+                <img [src]="imageNull" [alt]="">
+            </div>
+            <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+                <img [src]="imagePreview" [alt]="form.value.nombre">
+            </div>
+            <mat-error *ngIf="form.get('image').invalid && btnSavePress">Seleccione una imagen dando clic en el botón</mat-error>
+            <div class="btnImagen">
+                <button id="btnImagen" mat-stroked-button type="button" (click)="filePicker.click()">
+                    Selecciona una imagen
+                </button>
+                <input type="file" #filePicker (change)="onImagePicked($event)">
+            </div>
+        </div>
+
         <div>
             <button mat-raised-button color="accent" type="submit">
                 Guardar información

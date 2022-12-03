@@ -13,16 +13,15 @@ import Swal from "sweetalert2";
 export class ResultadosComponent implements OnInit, OnDestroy{
     becas: Beca[] = [];
     private becasSub: Subscription;
-    public load: boolean;
+    isLoading = false;
 
-    constructor(public becaService: BecaService){this.load = false;}
+    constructor(public becaService: BecaService){}
     ngOnInit() {
-        setTimeout(() => {
-            this.load = true;
-        }, 1000);
+        this.isLoading = true;
         this.becaService.getBecas();
         this.becasSub = this.becaService.getBecasUpdateListener()
         .subscribe((becas:Beca[])=>{
+            this.isLoading = false;
             this.becas = becas;
         });
     }
@@ -35,7 +34,6 @@ export class ResultadosComponent implements OnInit, OnDestroy{
         this.becaService.getBecas();
         this.messageDelete();
     }
-
     messageDelete(): void {
         Swal.fire({
             icon: "success",

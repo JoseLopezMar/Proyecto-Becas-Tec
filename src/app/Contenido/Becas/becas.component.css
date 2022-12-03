@@ -4,7 +4,7 @@ textarea {
 }
 mat-card {
     margin-top: 1rem;
-
+    font-size: larger;
 }
 div{
     display: flex;
@@ -13,6 +13,7 @@ div{
 }
 button{
     transition: all .3s;
+    font-size: large;
 }
 button:hover{
     transform: scale(0.9);
@@ -22,4 +23,47 @@ mat-form-field{
 }
 h1{
     text-align: center;
+}
+
+mat-spinner{
+    margin: auto;
+}
+
+input[type="file"]{
+    visibility: hidden;
+}
+
+input{
+    font-size: larger;
+}
+
+.image-preview{
+    height: 10rem;
+    margin: 1rem 0;
+}
+.image-preview img{
+    height: 100%;
+}
+.title{
+    background: #f7f5f5;
+    font-weight: bold; padding: 15px; 
+    border-left:8px solid #0099ff;
+    border-right:8px solid #ff00a2; 
+    border-top-left-radius:8px;
+    border-bottom-left-radius:8px;
+}
+.btnImagen{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+#contenedor {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 3rem;
+} 
+#contenedor > div {
+    width: 50%;
 }

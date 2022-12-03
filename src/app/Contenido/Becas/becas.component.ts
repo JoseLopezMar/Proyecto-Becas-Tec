@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { BecaService } from "../beca.service";
 import { Beca } from "../beca.model";
 import { ActivatedRoute, ParamMap } from "@angular/router";
+import { mimeType } from "../image.validator";
 import Swal from "sweetalert2";
 
 @Component({
@@ -13,56 +14,129 @@ import Swal from "sweetalert2";
 })
 
 export class BecasComponent implements OnInit{
-    nombre = '';
-    monto = '';  
-    fechaApertura = '';
-    fechaCierre = '';
-    limitePostulantes = ''; 
-    limiteAceptados = ''; 
-    nivelEducativo = ''; 
-    private mode = 'create'; //Modo establecido, saber en qué estoy en edición edit o creación create
+    form: FormGroup;
+    imagePreview: string;
+    imageNull: string = "../../../assets/images/snimagen.png";
+    btnSavePress: boolean = false;
+    mode = 'create'; //Modo establecido, saber en qué estoy en edición edit o creación create
     private becaId: string;
-    public load: boolean;  
+    isLoading = false; 
     beca: Beca;
 
-    constructor(public becaService: BecaService, public route: ActivatedRoute){this.load = false;}
+    constructor(public becaService: BecaService, public route: ActivatedRoute){}
+
     ngOnInit() {
-        setTimeout(() => {
-            this.load = true;
-        }, 1000);
+        const moment = require("moment");
+        this.isLoading = true;
+        this.form = new FormGroup({
+            "nombre": new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+            "monto": new FormControl(null, {validators: [Validators.required, Validators.minLength(1)]}),
+            "fechaApertura": new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+            "fechaCierre": new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+            "limitePostulantes": new FormControl(null, {validators: [Validators.required, Validators.minLength(1)]}),
+            "limiteAceptados": new FormControl(null, {validators: [Validators.required, Validators.minLength(1)]}),
+            "nivelEducativo": new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+            "image": new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
+        });
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
             if (paramMap.has('becaId')) {
+                this.form.addControl("estado", new FormControl(null, {validators: [Validators.required, Validators.minLength(1)]}));
                 this.mode = 'edit';
                 this.becaId = paramMap.get('becaId');
                 this.becaService.getBeca(this.becaId).subscribe(becaData => {
+                    this.imageNull = becaData.rutaImagen;
+                    
                     this.beca = {id: becaData._id, nombre: becaData.nombre, monto: becaData.monto, fechaApertura: becaData.fechaApertura, fechaCierre: becaData.fechaCierre, 
-                        limitePostulantes: becaData.limitePostulantes, limiteAceptados: becaData.limiteAceptados, nivelEducativo: becaData.nivelEducativo}
+                        limitePostulantes: becaData.limitePostulantes, postulantesRegistrados: becaData.postulantesRegistrados, limiteAceptados: becaData.limiteAceptados, 
+                        postulantesAceptados: becaData.postulantesAceptados, nivelEducativo: becaData.nivelEducativo, rutaImagen: becaData.rutaImagen, estado: becaData.estado}
+                    this.form.setValue({
+                        nombre: this.beca.nombre,
+                        monto: this.beca.monto,
+                        fechaApertura: this.beca.fechaApertura,
+                        fechaCierre: this.beca.fechaCierre,
+                        limitePostulantes: this.beca.limitePostulantes,
+                        limiteAceptados: this.beca.limiteAceptados,
+                        nivelEducativo: this.beca.nivelEducativo,
+                        image: this.beca.rutaImagen,
+                        estado: this.beca.estado
+                    });
                 });
             } else {
                 this.mode = 'create'
                 this.becaId = null;
+                this.form.setValue({
+                    nombre: '', monto: '', fechaCierre: '', limitePostulantes: '',
+                    limiteAceptados: '', nivelEducativo: '', image: '',
+                    fechaApertura: moment().format("YYYY-MM-DD")
+                })
             }
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 200);
         });
     }
 
-    onSaveBeca(form: NgForm){
-        if (form.invalid) {
-            return
-        }
-        if (this.mode === 'create') {
-            this.becaService.addBeca('1', form.value.nombre, form.value.monto, form.value.fechaApertura, 
-                form.value.fechaCierre, form.value.limitePostulantes, form.value.limiteAceptados, form.value.nivelEducativo);
-            this.messageCreate();
-        } else {
-            this.becaService.updateBeca(this.becaId, form.value.nombre, form.value.monto, form.value.fechaApertura, 
-                form.value.fechaCierre, form.value.limitePostulantes, form.value.limiteAceptados, form.value.nivelEducativo);
-            this.messageEdit();
-        }
-        form.resetForm();
+    onImagePicked(event: Event){
+        const file = (event.target as HTMLInputElement).files[0];
+        this.form.patchValue({image: file});
+        this.form.get('image').updateValueAndValidity();
+        const reader = new FileReader();
+        reader.onload = (() => {
+            this.imagePreview = reader.result as string;
+        });
+        reader.readAsDataURL(file);
+        this.imageNull = '';
     }
 
-    limpiar(form: NgForm){
-        form.resetForm()
+    onSaveBeca(){
+        this.btnSavePress = true;
+        if (this.form.invalid) {
+            return
+        }
+        if (!this.validaciones()) {
+            return
+        }
+        this.isLoading = true;
+        if (this.mode === 'create') {
+            this.becaService.addBeca(this.form.value.nombre, this.form.value.monto, this.form.value.fechaApertura, 
+                this.form.value.fechaCierre, this.form.value.limitePostulantes, this.form.value.limiteAceptados, 
+                this.form.value.nivelEducativo, this.form.value.image);
+            this.messageCreate();
+        } else {
+            this.becaService.updateBeca(this.becaId, this.form.value.nombre, this.form.value.monto, this.form.value.fechaApertura, 
+                this.form.value.fechaCierre, this.form.value.limitePostulantes, this.beca.postulantesRegistrados, this.beca.postulantesAceptados,
+                this.form.value.limiteAceptados, this.form.value.nivelEducativo, this.form.value.image, this.form.value.estado);
+            this.messageEdit();
+        }
+        this.form.reset();
+        this.isLoading = false;
+    }
+
+    validaciones(): boolean {
+        if (this.form.value.limitePostulantes < this.form.value.limiteAceptados) {
+            document.getElementById('limPos').focus();
+            this.messageError('El límite de postulantes no puede ser menor que el límite de aceptados');
+            return false;
+        }
+        if (this.form.value.fechaApertura > this.form.value.fechaCierre) {
+            document.getElementById('fecApe').focus();
+            this.messageError('La fecha de apertura no puede ser después que la de cierre');
+            return false;
+        }
+        if (this.mode === 'edit' && this.form.value.estado !== 0 && this.form.value.estado !== 1) {
+            document.getElementById('idEstado').focus();
+            this.messageError('En el campo de estado solo pueden ingresarse los valores 1 y 0');
+            return false;
+        }
+        return true;
+    }
+
+    messageError(msg: string): void {
+        Swal.fire({
+            icon: "warning",
+            title: "Advertencia sobre los campos",
+            text: msg
+        });
     }
 
     messageCreate(): void {

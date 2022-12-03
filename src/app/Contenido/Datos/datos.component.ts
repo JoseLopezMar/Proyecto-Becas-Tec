@@ -18,6 +18,9 @@ export class DatosComponent implements OnInit{
     curp = '';
     domicilio = ''; 
     telefono = '';
+    constrasena = '';
+    correo = '';
+    tipoUsuario = '';
     private mode = 'create';
     private postulanteId: string;
     public load: boolean;
@@ -35,7 +38,7 @@ export class DatosComponent implements OnInit{
                 this.postulanteId = paramMap.get('postulanteId');
                 this.postulanteService.getPostulante(this.postulanteId).subscribe(postulanteData => {
                     this.postulante = {id: postulanteData._id, nombre: postulanteData.nombre, apellidoP: postulanteData.apellidoP, apellidoM: postulanteData.apellidoM, curp: postulanteData.curp, 
-                        domicilio: postulanteData.domicilio, telefono: postulanteData.telefono}
+                        domicilio: postulanteData.domicilio, telefono: postulanteData.telefono, contrasena: postulanteData.contrasena, correo: postulanteData.correo, tipoUsuario: postulanteData.tipoUsuario}
                 });
             } else {
                 this.mode = 'create'
@@ -49,12 +52,12 @@ export class DatosComponent implements OnInit{
             return
         }
         if (this.mode === 'create') {
-            this.postulanteService.addPostulante('1', form.value.nombre, form.value.apellidoP, form.value.apellidoM, 
-                form.value.curp, form.value.domicilio, form.value.telefono);
+            this.postulanteService.addPostulante('1', form.value.nombre, form.value.apellidoP, form.value.apellidoM,
+                form.value.curp, form.value.domicilio, form.value.telefono, form.value.constrasena, form.value.correo, form.value.tipoUsuario);
             this.messageCreate();
         } else {
             this.postulanteService.updatePostulante(this.postulanteId, form.value.nombre, form.value.apellidoP, form.value.apellidoM, 
-                form.value.curp, form.value.domicilio, form.value.telefono);
+                form.value.curp, form.value.domicilio, form.value.telefono, form.value.constrasena, form.value.correo, form.value.tipoUsuario);
             this.messageEdit();
         }
         form.resetForm();

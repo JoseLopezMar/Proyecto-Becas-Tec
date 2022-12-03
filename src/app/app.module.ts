@@ -18,11 +18,11 @@ import {MatExpansionModule} from '@angular/material/expansion'
 import { ListaComponent } from './Contenido/Lista/lista.component';
 import { PiePaginaComponent } from './Pie-pagina/pie-pagina.component';
 import { AppRoutingModule } from './app-routing.module';
-import { InicioComponent } from './Contenido/Inicio/inicio.component';
 import { BecasComponent } from './Contenido/Becas/becas.component';
 import { BecaService } from './Contenido/beca.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ResultadosComponent } from './Contenido/Resultados/resultados.component';
+import { LoginComponent } from './Login/login.component';
 
 
 @NgModule({
@@ -33,10 +33,10 @@ import { ResultadosComponent } from './Contenido/Resultados/resultados.component
     ContenidoComponent,
     DatosComponent,
     ListaComponent,
-    InicioComponent,
     PiePaginaComponent,
     BecasComponent,
-    ResultadosComponent 
+    ResultadosComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

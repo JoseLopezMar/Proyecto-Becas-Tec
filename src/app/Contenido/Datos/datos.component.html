@@ -21,6 +21,14 @@ border-top-left-radius:8px; border-bottom-left-radius:8px;"> ¡POSTÚLATE AQUÍ!
             <mat-error *ngIf="apellidoM.invalid">Ingresa tu apellido materno</mat-error>
         </mat-form-field>
         <mat-form-field>
+            <input matInput type="text" name="correo" [ngModel]="postulante?.correo" required #correo="ngModel" placeholder="Correo Electrónico">
+            <mat-error *ngIf="correo.invalid">Ingresa tu correo Electrónico</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="password" name="contrasena" [ngModel]="postulante?.contrasena" maxlength="8" required #contrasena="ngModel" placeholder="Contraseña">
+            <mat-error *ngIf="contrasena.invalid">Ingresa tu contraseña </mat-error>
+        </mat-form-field>
+        <mat-form-field>
             <input matInput type="text" name="curp" [ngModel]="postulante?.curp" maxlength="13" required #curp="ngModel" placeholder="CURP">
             <mat-error *ngIf="curp.invalid">Ingresa tu CURP</mat-error>
         </mat-form-field>

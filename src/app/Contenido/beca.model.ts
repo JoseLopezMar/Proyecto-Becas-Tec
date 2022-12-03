@@ -1,4 +1,4 @@
-
+//Beca
 export interface Beca{
     id: string,
     nombre: string,

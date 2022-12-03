@@ -5,5 +5,8 @@ export interface Postulante{
     apellidoM: string,
     curp: string,
     domicilio: string,
-    telefono: string
+    telefono: string,
+    contrasena: string,
+    correo: string,
+    tipoUsuario:string
 }

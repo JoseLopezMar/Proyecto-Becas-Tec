@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 })
 
 export class DatosComponent implements OnInit{
+    //Variables
     nombre = '';
     apellidoP = '';  
     apellidoM = '';

@@ -1,12 +1,17 @@
-<mat-toolbar><img src="../../assets/images/Logo.png">
+<mat-toolbar>
+    <img src="../../assets/images/Logo.png">
     <nav>
         <ul>
-            <li><a routerLink="/"> <img src="../../assets/images/Inicio.png"></a></li>
-            <li><a routerLink="/postulantes/create"> Postulante</a></li>
-            <li><a routerLink="/becas/create"> Becas</a></li>
-            <li><a routerLink="/postulantes"> Resultados Postulantes</a></li>
-            <li><a routerLink="/becas"> Resultados Becas</a></li>
+            <li *ngFor="let menuOption of menuOptions">
+                <a routerLink="{{menuOption.ruta}}">
+                    <img *ngIf="menuOption.imagen" src="{{menuOption.imagen}}">
+                    <a *ngIf="!menuOption.imagen">
+                        {{menuOption.nombre}}
+                    </a> 
+                </a>
+            </li>
         </ul>
     </nav>
 </mat-toolbar>
+
 

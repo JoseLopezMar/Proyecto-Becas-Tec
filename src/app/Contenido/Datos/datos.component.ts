@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { ActivatedRoute, ParamMap } from "@angular/router";
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { Postulante } from "../postulante.model";
 import { PostulanteService } from "../postulante.service";
 import Swal from "sweetalert2";
@@ -27,7 +27,7 @@ export class DatosComponent implements OnInit{
     public load: boolean;
     postulante: Postulante;
 
-    constructor(public postulanteService: PostulanteService, public route: ActivatedRoute){this.load = false;}
+    constructor(public postulanteService: PostulanteService, public route: ActivatedRoute, private router: Router){this.load = false;}
 
     ngOnInit() {
         setTimeout(() => {
@@ -54,7 +54,7 @@ export class DatosComponent implements OnInit{
         }
         if (this.mode === 'create') {
             this.postulanteService.addPostulante('1', form.value.nombre, form.value.apellidoP, form.value.apellidoM,
-                form.value.curp, form.value.domicilio, form.value.telefono, form.value.constrasena, form.value.correo, form.value.tipoUsuario);
+                form.value.curp, form.value.domicilio, form.value.telefono, form.value.contrasena, form.value.correo);
             this.messageCreate();
         } else {
             this.postulanteService.updatePostulante(this.postulanteId, form.value.nombre, form.value.apellidoP, form.value.apellidoM, 
@@ -62,6 +62,10 @@ export class DatosComponent implements OnInit{
             this.messageEdit();
         }
         form.resetForm();
+    }
+
+    Regresar(){
+        this.router.navigateByUrl('');
     }
 
     limpiar(form: NgForm){

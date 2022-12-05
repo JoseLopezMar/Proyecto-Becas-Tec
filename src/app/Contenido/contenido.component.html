@@ -1,18 +1,16 @@
-<div class="overlay" *ngIf="!load">
-    <div class="spinner ">
-        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
-      </div>
-</div>
-
-<div *ngIf="load"class="main">
+<app-redes-sociales></app-redes-sociales>
+<app-Encabezado></app-Encabezado>
+<router-outlet></router-outlet>
+<app-Pie-pagina></app-Pie-pagina>
+<!--div *ngIf="!isLoading" class="main">
     <img class="img1" src="../../assets/images/Contenido.png">
     <img src="../../assets/images/Contenido2.png">
 </div>
 
-<h1 style=" color: #0066FF;">
+<h1 *ngIf="!isLoading" style=" color: #0066FF;">
     Convocatorias Activas
 </h1>
-<div>
+<div *ngIf="!isLoading">
     <a routerLink="postulantes/create">
         <img class="img2" src="../../../assets/images/Movilidad.png">
     </a>
@@ -23,10 +21,10 @@
         <img class="img2" src="../../../assets/images/Diplomado.png">
     </a>
 </div>
-<div>
-<hr>
+<div *ngIf="!isLoading">
+    <hr>
 </div>
-<div>
+<div *ngIf="!isLoading">
     <a routerLink="postulantes/create">
         <img class="img2" src="../../../assets/images/Mentefactura.png">
     </a>
@@ -36,7 +34,4 @@
     <a routerLink="postulantes/create">
         <img class="img2" src="../../../assets/images/Musica.png">
     </a>
-</div>
-    
-  
-    
+</div-->

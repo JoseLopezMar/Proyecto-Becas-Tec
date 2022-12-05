@@ -25,7 +25,7 @@ border-top-left-radius:8px; border-bottom-left-radius:8px;"> ¡POSTÚLATE AQUÍ!
             <mat-error *ngIf="correo.invalid">Ingresa tu correo Electrónico</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="password" name="contrasena" [ngModel]="postulante?.contrasena" maxlength="8" required #contrasena="ngModel" placeholder="Contraseña">
+            <input matInput type="password" name="contrasena" [ngModel]="postulante?.contrasena" required #contrasena="ngModel" placeholder="Contraseña">
             <mat-error *ngIf="contrasena.invalid">Ingresa tu contraseña </mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -42,6 +42,9 @@ border-top-left-radius:8px; border-bottom-left-radius:8px;"> ¡POSTÚLATE AQUÍ!
             <mat-error *ngIf="telefono.invalid">Ingresa tu número de teléfono</mat-error>
         </mat-form-field>
         <div>
+            <button mat-raised-button color="primary" type="submit" (click)="Regresar()">
+                Regresar
+            </button>
             <button mat-raised-button color="accent" type="submit">
                 Guardar información
             </button>

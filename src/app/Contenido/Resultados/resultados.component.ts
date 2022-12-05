@@ -30,8 +30,8 @@ export class ResultadosComponent implements OnInit, OnDestroy{
     }
     deleteBeca(id: string) {
         this.becaService.deleteBeca(id);
-        this.becas = [];
-        this.becaService.getBecas();
+        //this.becas = [];
+        //this.becaService.getBecas();
         this.messageDelete();
     }
     messageDelete(): void {

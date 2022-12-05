@@ -5,16 +5,26 @@ import { ContenidoComponent } from './Contenido/contenido.component';
 import { DatosComponent, } from './Contenido/Datos/datos.component';
 import { ListaComponent } from './Contenido/Lista/lista.component';
 import { ResultadosComponent } from './Contenido/Resultados/resultados.component';
+import { LoginComponent } from './Login/login.component';
+import { InicioComponent } from './Contenido/Inicio/inicio.component';
+import { Login } from './login.guard';
 
 const routes: Routes = [
 
-  {path: '', component: ContenidoComponent},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
   {path: 'postulantes/create', component: DatosComponent},
-  {path: 'becas/create',component: BecasComponent},
-  {path: 'postulantes/edit/:postulanteId', component: DatosComponent},
-  {path: 'becas/edit/:becaId',component: BecasComponent}, 
-  {path: 'postulantes', component: ListaComponent}, 
-  {path: 'becas', component: ResultadosComponent}
+  {path: 'inicio', component: ContenidoComponent, canActivate: [Login],
+    children: [
+      {path: 'inicio', component: InicioComponent, canActivate: [Login]},
+      {path: 'postulantes/create', component: DatosComponent, canActivate: [Login]},
+      {path: 'becas/create',component: BecasComponent, canActivate: [Login]},
+      {path: 'postulantes/edit/:postulanteId', component: DatosComponent, canActivate: [Login]},
+      {path: 'becas/edit/:becaId',component: BecasComponent, canActivate: [Login]}, 
+      {path: 'postulantes', component: ListaComponent, canActivate: [Login]}, 
+      {path: 'becas', component: ResultadosComponent, canActivate: [Login]}
+    ]},
+  
 ];
 
 //El jose

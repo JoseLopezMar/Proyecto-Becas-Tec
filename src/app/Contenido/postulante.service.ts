@@ -2,14 +2,15 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { Postulante } from "./postulante.model";
 import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs/operators"
+import { map, tap } from "rxjs/operators"
+import { Router } from "@angular/router";
 
 @Injectable({providedIn: 'root'})
 export class PostulanteService{
     private postulantes: Postulante[] = []; 
     private postulantesUpdate = new Subject<Postulante[]>();
 
-    constructor (private http: HttpClient){}
+    constructor (private http: HttpClient, public route: Router){}
 
     getPostulantes() {
         this.http.get<{message: string, postulantes: any}>('http://localhost:3000/api.becas/postulante')
@@ -25,7 +26,7 @@ export class PostulanteService{
                     telefono: postulante.telefono,
                     tipoUsuario: postulante.tipoUsuario,
                     correo: postulante.correo,
-                    
+                    contrasena: postulante.contrasena
                 }
             });
         }))
@@ -44,12 +45,15 @@ export class PostulanteService{
     }
 
     getPostulante(id: string) {
-        return this.http.get<{_id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, domicilio: string, telefono: string, idUsuario: string, correo: string, contrasena: string, tipoUsuario: string }>('http://localhost:3000/api.becas/postulante/'+id);
+        return this.http.get<{
+            _id: string, nombre: string, apellidoP: string, apellidoM: string, 
+            curp: string, domicilio: string, telefono: string, idUsuario: string, 
+            correo: string, contrasena: string, tipoUsuario: string 
+        }>('http://localhost:3000/api.becas/postulante/'+id);
     }
 
-    addPostulante(id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, correo: string, contrasena, tipoUsuario: string, 
-        domicilio: string, telefono: string){
-        const postulante: Postulante = {id: null, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, curp: curp, correo: correo, contrasena: contrasena, tipoUsuario: tipoUsuario,
+    addPostulante(id: string, nombre: string, apellidoP: string, apellidoM: string, curp: string, domicilio: string, telefono: string, contrasena: string, correo: string){
+        const postulante: Postulante = {id: null, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, curp: curp, correo: correo, contrasena: contrasena,
             domicilio: domicilio, telefono: telefono}
         this.http.post<{message: string, postulanteId: string}>('http://localhost:3000/api.becas/postulante', postulante).
         subscribe((responseData) => {
@@ -81,6 +85,22 @@ export class PostulanteService{
             console.log(responseData.message);
             this.postulantes = this.postulantes.filter((element) => element.id !== id);
             this.postulantesUpdate.next([...this.postulantes]);
+        });
+    }
+
+    loginUsuarios(correo: string, contrasena: string){
+        let credenciales = {
+            correo,
+            contrasena
+        }
+        this.http.post<{ok: boolean, usuario, token: any, msg:string}>(`http://localhost:3000/api.becas/login`, credenciales).
+        subscribe((responseData) => {
+            if(responseData.ok){
+                sessionStorage.setItem('idUsuario', responseData.usuario._id);
+                sessionStorage.setItem('tipoUsuario', responseData.usuario.tipoUsuario);
+                sessionStorage.setItem('token', responseData.token);
+                this.route.navigate(["/inicio/inicio"]);
+            }
         });
     }
 }

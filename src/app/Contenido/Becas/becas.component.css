@@ -57,6 +57,14 @@ input{
     display: flex;
     flex-direction: column;
 }
+.principal{
+    margin-bottom: 60px;
+    margin-left: 60px;
+    margin-right: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 #contenedor {
     display: flex;
     flex-direction: column;

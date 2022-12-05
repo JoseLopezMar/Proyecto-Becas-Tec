@@ -3,8 +3,6 @@ const mongoose = require("mongoose");
 const postulacionesSchema = mongoose.Schema({
     idPostulante: {type: String, required: true}, 
     idBeca: {type: String, required: true},
-    postulante: {type: String, required: true}, 
-    beca: {type: String, required: true},
     ingresoMensual: {type: Number, required: true},
     promedioEscolar: {type: Number, required: true},
     gradoActual: {type: Number, required: true},

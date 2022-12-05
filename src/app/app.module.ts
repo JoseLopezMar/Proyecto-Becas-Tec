@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
@@ -23,7 +23,7 @@ import { BecaService } from './Contenido/beca.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ResultadosComponent } from './Contenido/Resultados/resultados.component';
 import { LoginComponent } from './Login/login.component';
-
+import { InicioComponent } from './Contenido/Inicio/inicio.component'
 
 @NgModule({
   declarations: [
@@ -36,11 +36,13 @@ import { LoginComponent } from './Login/login.component';
     PiePaginaComponent,
     BecasComponent,
     ResultadosComponent,
-    LoginComponent
+    LoginComponent,
+    InicioComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatInputModule,
@@ -49,7 +51,7 @@ import { LoginComponent } from './Login/login.component';
     MatExpansionModule,
     MatProgressSpinnerModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [PostulanteService, BecaService],
   bootstrap: [AppComponent]

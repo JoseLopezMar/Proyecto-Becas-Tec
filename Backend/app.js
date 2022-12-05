@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const becasRutes = require('./routes/rutas');
 const path = require('path')
+require("dotenv").config();
 
 mongoose.connect(
     'mongodb+srv://Admin:7JbxApvWK986lneK@cluster0.2ykui5j.mongodb.net/?retryWrites=true&w=majority')

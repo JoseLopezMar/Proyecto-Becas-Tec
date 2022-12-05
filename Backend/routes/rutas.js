@@ -4,6 +4,8 @@ const Postulacion = require('../models/postulacion');
 const Beca = require('../models/beca');
 const router = express.Router();
 const multer = require('multer');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const MIME_TYPE_MAP = {
     'image/png': 'png',
@@ -27,13 +29,46 @@ const storage = multer.diskStorage({
     }
 });
 
-//------------------------------------------ POSTULANTES ------------------------------------------
+//------------------------------------------ LOGIN ------------------------------------------
+router.post('/login', (req, res, next) => {
+    Postulante.findOne({ correo: req.body.correo }).then(postulante => {
+
+        //Comprueba que el correo exista en la BD
+        if (!postulante) {
+            return res.json({ 
+                ok: false, usuario: postulante, token: ''
+            });
+        }
+
+        //Compruba que la contraseña sea la correcta
+        if (!bcrypt.compareSync(req.body.contrasena, postulante.contrasena)) {
+            return res.json({ 
+                ok: false, usuario: postulante, token: ''
+            });
+        }
+
+        //Generar token de autenticación
+        const id = req.body._id;
+        let token = jwt.sign(
+            { payload: id },
+            process.env.JWT_SECRET,
+            { expiresIn: "24h"}
+        );
+
+        res.json({ 
+            ok: true, usuario: postulante, token 
+        });
+    });
+});
+
+//------------------------------------------ POSTULANTES/USUARIOS ------------------------------------------
 
 router.post('/postulante', (req, res, next) => {
+    const salt = bcrypt.genSaltSync();
     const postulante = new Postulante({
-        contrasena: req.body.contrasena,
+        contrasena: bcrypt.hashSync(req.body.contrasena, salt),
         correo: req.body.correo,
-        tipoUsuario: req.body.tipoUsuario,
+        tipoUsuario: 'Admin',
         nombre: req.body.nombre,
         apellidoP: req.body.apellidoP,
         apellidoM: req.body.apellidoM,
@@ -308,6 +343,7 @@ router.delete('/beca/:id', (req, res, next) => {
             }
         )
     });
+    //fs.unlinkSync(`../images/${dividido[1]}`);
 });
 
 module.exports = router;

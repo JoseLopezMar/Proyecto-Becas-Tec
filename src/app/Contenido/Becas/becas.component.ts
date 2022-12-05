@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { BecaService } from "../beca.service";
 import { Beca } from "../beca.model";
@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
     
 })
 
-export class BecasComponent implements OnInit{
+export class BecasComponent implements OnInit, OnDestroy{
     form: FormGroup;
     imagePreview: string;
     imageNull: string = "../../../assets/images/snimagen.png";
@@ -26,6 +26,9 @@ export class BecasComponent implements OnInit{
     constructor(public becaService: BecaService, public route: ActivatedRoute){}
 
     ngOnInit() {
+        this.becaService.getBecasDisponibles().subscribe(data => {
+            console.log(data);
+        });
         const moment = require("moment");
         this.isLoading = true;
         this.form = new FormGroup({
@@ -74,6 +77,10 @@ export class BecasComponent implements OnInit{
                 this.isLoading = false;
             }, 200);
         });
+    }
+
+    ngOnDestroy(): void {
+        localStorage.clear();
     }
 
     onImagePicked(event: Event){
@@ -157,5 +164,9 @@ export class BecasComponent implements OnInit{
             showConfirmButton: false,
             timer: 2000
         });
+    }
+
+    limpiar(){
+        this.form.reset();
     }
 }

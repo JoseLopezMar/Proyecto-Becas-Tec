@@ -116,3 +116,11 @@ p{
 .content-select:hover i{
 	margin-top: 3px;
 }
+.principal{
+    margin-bottom: 60px;
+    margin-left: 60px;
+    margin-right: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

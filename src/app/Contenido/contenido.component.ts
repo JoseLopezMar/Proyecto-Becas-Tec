@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
 @Component({
     selector: 'app-Contenido',
@@ -8,15 +8,16 @@ import { Component } from "@angular/core";
 })
 
 
-export class ContenidoComponent{
-    public load: boolean;
+export class ContenidoComponent implements OnInit, OnDestroy{
 
-    constructor(){this.load = false;}
+    constructor(){}
 
     ngOnInit() {
-        setTimeout(() => {
-            this.load = true;
-        }, 1000);
+        
+    }
+
+    ngOnDestroy(): void {
+        
     }
 }
 

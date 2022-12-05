@@ -148,4 +148,28 @@ export class BecaService{
             this.becasUpdate.next([...this.becas]);
         });
     }
+
+    getBecasDisponibles() {
+        return this.http.get<{message: string, becas: any}>('http://localhost:3000/api.becas/beca')
+        .pipe(map((becasData) => {
+            return becasData.becas.map(beca => {
+                if (beca.estado === 1 && beca.limitePostulantes > beca.postulantesRegistrados && beca.limiteAceptados > beca.postulantesAceptados) {
+                    return {
+                        id: beca._id,
+                        nombre: beca.nombre,
+                        monto: beca.monto,
+                        fechaApertura: beca.fechaApertura,
+                        fechaCierre: beca.fechaCierre,
+                        limitePostulantes: beca.limitePostulantes,
+                        postulantesRegistrados: beca.postulantesRegistrados,
+                        limiteAceptados: beca.limiteAceptados,
+                        postulantesAceptados: beca.postulantesAceptados,
+                        nivelEducativo: beca.nivelEducativo,
+                        rutaImagen: beca.rutaImagen,
+                        estado: beca.estado
+                    }
+                }
+            });
+        }));
+    }
 }

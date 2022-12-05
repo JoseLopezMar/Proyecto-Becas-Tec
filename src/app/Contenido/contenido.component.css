@@ -27,3 +27,6 @@ h1{
 .img2:hover{
     transform: scale(0.9);
 }
+mat-spinner{
+    margin: auto;
+}

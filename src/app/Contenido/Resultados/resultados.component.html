@@ -1,38 +1,40 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-<h1 class="title" *ngIf="!isLoading">¡BECAS REGISTRADAS!</h1>
-<div>
-    <mat-accordion multi="true" *ngIf="becas.length > 0 && !isLoading">
-        <mat-expansion-panel *ngFor="let beca of becas">
-            <mat-expansion-panel-header>
-                <strong>{{ beca.nombre | uppercase }}</strong>
-            </mat-expansion-panel-header>
-            <br>
-            <div class="padre">
-                <div id="contenedor">
-                    <div class="imagen">
-                        <img [src]="beca.rutaImagen" [alt]="beca.nombre">
-                    </div>
-                    <div id="contenido">
-                        <p><strong>Nombre:</strong> {{beca.nombre}}</p>
-                        <p><strong>Monto:</strong> {{beca.monto}}</p>
-                        <p><strong>Fecha de apertura:</strong> {{beca.fechaApertura}}</p>
-                        <p><strong>Fecha de cierre:</strong> {{beca.fechaCierre}}</p>
-                        <p><strong>Límite de postulantes:</strong> {{beca.limitePostulantes}}</p>
-                        <p><strong>Postulantes registrados actualmente:</strong> {{beca.postulantesRegistrados}}</p>
-                        <p><strong>Límite de aceptados:</strong> {{beca.limiteAceptados}}</p>
-                        <p><strong>Postulantes aceptados actualmente:</strong> {{beca.postulantesAceptados}}</p>
-                        <p><strong>Nivel educativo:</strong> {{beca.nivelEducativo}}</p>
-                        <p><strong>Estado:</strong> {{beca.estado}}</p>
+<div class="principal">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <h1 class="title" *ngIf="!isLoading">¡BECAS REGISTRADAS!</h1>
+    <div>
+        <mat-accordion multi="true" *ngIf="becas.length > 0 && !isLoading">
+            <mat-expansion-panel *ngFor="let beca of becas">
+                <mat-expansion-panel-header>
+                    <strong>{{ beca.nombre | uppercase }}</strong>
+                </mat-expansion-panel-header>
+                <br>
+                <div class="padre">
+                    <div id="contenedor">
+                        <div class="imagen">
+                            <img [src]="beca.rutaImagen" [alt]="beca.nombre">
+                        </div>
+                        <div id="contenido">
+                            <p><strong>Nombre:</strong> {{beca.nombre}}</p>
+                            <p><strong>Monto:</strong> {{beca.monto}}</p>
+                            <p><strong>Fecha de apertura:</strong> {{beca.fechaApertura}}</p>
+                            <p><strong>Fecha de cierre:</strong> {{beca.fechaCierre}}</p>
+                            <p><strong>Límite de postulantes:</strong> {{beca.limitePostulantes}}</p>
+                            <p><strong>Postulantes registrados actualmente:</strong> {{beca.postulantesRegistrados}}</p>
+                            <p><strong>Límite de aceptados:</strong> {{beca.limiteAceptados}}</p>
+                            <p><strong>Postulantes aceptados actualmente:</strong> {{beca.postulantesAceptados}}</p>
+                            <p><strong>Nivel educativo:</strong> {{beca.nivelEducativo}}</p>
+                            <p><strong>Estado:</strong> {{beca.estado}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <mat-action-row>
-                <a mat-button color="primary" [routerLink]="['/becas/edit', beca.id]">Editar</a>
-                <button mat-button color="warn" (click)="deleteBeca(beca.id)">Eliminar</button>
-            </mat-action-row>
-        </mat-expansion-panel>
-    </mat-accordion>
-    <h3 *ngIf="becas.length <= 0 && !isLoading">
-        No hay becas agregadas
-    </h3>
+                <mat-action-row>
+                    <a mat-button color="primary" [routerLink]="['/inicio/becas/edit', beca.id]">Editar</a>
+                    <button mat-button color="warn" (click)="deleteBeca(beca.id)">Eliminar</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <h3 *ngIf="becas.length <= 0 && !isLoading">
+            No hay becas agregadas
+        </h3>
+    </div>
 </div>

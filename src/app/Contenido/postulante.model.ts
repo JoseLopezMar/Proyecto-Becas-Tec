@@ -8,5 +8,5 @@ export interface Postulante{
     telefono: string,
     contrasena: string,
     correo: string,
-    tipoUsuario:string
+    tipoUsuario?:string
 }

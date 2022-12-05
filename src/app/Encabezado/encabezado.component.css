@@ -1,5 +1,6 @@
 mat-toolbar{
-    background-color: white;
+    background-color: rgb(255, 255, 255);
+    border-bottom: #0c1295 3px solid;
 }
 
  body{
@@ -28,6 +29,8 @@ mat-toolbar{
   margin: 30px;
  }
  a:hover{
-  color: #0066FF
+  color: #000dff;
  }
-
+img{
+    width: 10%;
+}

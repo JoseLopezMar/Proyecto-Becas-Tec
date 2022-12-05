@@ -1,0 +1,34 @@
+<div class="overlay" *ngIf="!load">
+    <div class="spinner ">
+        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
+    </div>
+</div>
+<div *ngIf="load">
+    <h1 class="title" *ngIf="!load">¡LISTADO DE POSTULACIONES!</h1>
+    <mat-accordion multi="true" *ngIf="postulaciones.length > 0">
+        <mat-expansion-panel *ngFor="let postulacion of postulaciones">
+            <mat-expansion-panel-header>
+                <strong>{{postulacion.idPostulante}}</strong>
+            </mat-expansion-panel-header>
+            <br>
+            <p><strong>Postulante:</strong> {{postulacion.idPostulante}}</p>
+            <p><strong>Beca:</strong> {{postulacion.idBeca}}</p>
+            <p><strong>Ingreso Mensual:</strong> {{postulacion.ingresomensual}}</p>
+            <p><strong>Promedio Escolar:</strong> {{postulacion.promedioEscolar}}</p>
+            <p><strong>Grado Actual:</strong> {{postulacion.gradoActual}}</p>
+            <p><strong>Escuela:</strong> {{postulacion.escuela}}</p>
+            <p><strong>Estado:</strong> {{postulacion.estado}}</p>
+            <!--mat-action-row>
+            <a mat-button color="primary" [routerLink]="['/inicio/postulaciones/edit', postulacion.id]">Editar</a>
+            <button mat-button color="warn" (click)="deletePostulaciones(postulacion.id)">Eliminar</button>
+        </mat-action-row-->
+
+        </mat-expansion-panel>
+    </mat-accordion>
+    <h3 style="background: #bdf0fa; 
+    color: #0c92ac; font-weight: bold; 
+    padding: 15px; border: 2px solid #abecf9; 
+    border-radius: 6px;" *ngIf="postulaciones.length <= 0">
+        No hay postulantes agregados
+    </h3>
+</div>

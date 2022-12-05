@@ -5,7 +5,7 @@ const postulacionesSchema = mongoose.Schema({
     idBeca: {type: String, required: true},
     ingresoMensual: {type: Number, required: true},
     promedioEscolar: {type: Number, required: true},
-    gradoActual: {type: Number, required: true},
+    gradoActual: {type: String, required: true},
     escuela: {type: String, required: true},
     estado: {type: String, required: true}
 });

@@ -23,7 +23,10 @@ import { BecaService } from './Contenido/beca.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ResultadosComponent } from './Contenido/Resultados/resultados.component';
 import { LoginComponent } from './Login/login.component';
-import { InicioComponent } from './Contenido/Inicio/inicio.component'
+import { InicioComponent } from './Contenido/Inicio/inicio.component';
+import { PostulacionesComponent } from './Contenido/Postulaciones/postulaciones.component';
+import { ConvocatoriasComponent } from './Contenido/Convocatorias/convocatorias.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { InicioComponent } from './Contenido/Inicio/inicio.component'
     BecasComponent,
     ResultadosComponent,
     LoginComponent,
-    InicioComponent
+    InicioComponent,
+    PostulacionesComponent,
+    ConvocatoriasComponent
   ],
   imports: [
     BrowserModule,

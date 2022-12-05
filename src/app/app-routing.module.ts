@@ -8,6 +8,8 @@ import { ResultadosComponent } from './Contenido/Resultados/resultados.component
 import { LoginComponent } from './Login/login.component';
 import { InicioComponent } from './Contenido/Inicio/inicio.component';
 import { Login } from './login.guard';
+import { PostulacionesComponent } from './Contenido/Postulaciones/postulaciones.component';
+import { ConvocatoriasComponent } from './Contenido/Convocatorias/convocatorias.component';
 
 const routes: Routes = [
 
@@ -22,7 +24,9 @@ const routes: Routes = [
       {path: 'postulantes/edit/:postulanteId', component: DatosComponent, canActivate: [Login]},
       {path: 'becas/edit/:becaId',component: BecasComponent, canActivate: [Login]}, 
       {path: 'postulantes', component: ListaComponent, canActivate: [Login]}, 
-      {path: 'becas', component: ResultadosComponent, canActivate: [Login]}
+      {path: 'becas', component: ResultadosComponent, canActivate: [Login]},
+      {path: 'postulaciones', component: ConvocatoriasComponent, canActivate: [Login]},
+      {path: 'postulaciones/create', component: PostulacionesComponent, canActivate: [Login]}
     ]},
   
 ];

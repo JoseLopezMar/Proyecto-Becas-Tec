@@ -1,0 +1,44 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<h1 class="title" *ngIf="!isLoading && mode === 'create'"> ¡CONVOCATORIA!</h1>
+<h1 class="title" *ngIf="!isLoading && mode === 'edit'"> ¡MODIFICA AQUÍ LOS DATOS DE LA CONVOCATORIA SELECCIONADA!</h1>
+
+<mat-card> 
+    <form [formGroup]="form" (submit)="onSavePostulaciones()" *ngIf="!isLoading" id="formulario">
+        <mat-form-field>
+            <input matInput type="text" formControlName="idPostulante" placeholder="Postulante">
+            <mat-error *ngIf="form.get('idPostulante').invalid">Ingresa el nombre del postulante</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" formControlName="idBeca" placeholder="Beca">
+            <mat-error *ngIf="form.get('idBeca').invalid">Ingresa el nombre de la beca</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" formControlName="ingresoMensual"  placeholder="Ingreso Mensual">
+            <mat-error *ngIf="form.get('ingresoMensual').invalid">Ingresa el monto Mensual</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" formControlName="promedioEscolar" placeholder="Promedio Escolar">
+            <mat-error *ngIf="form.get('promedioEscolar').invalid">Ingresa tu promedio escolar</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" formControlName="gradoActual"  placeholder="Semestre actual">
+            <mat-error *ngIf="form.get('gradoActual').invalid">Ingresa tu semestre actual </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" formControlName="escuela" placeholder="Escuela">
+            <mat-error *ngIf="form.get('escuela').invalid">Ingresa el nombre de tu institución</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" formControlName="estado" placeholder="Estado">
+            <mat-error *ngIf="form.get('estado').invalid"> Estado</mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="accent" type="submit">
+                Guardar información
+            </button>
+            <button mat-raised-button color="primary" type="submit" (click)="limpiar(postForm)">
+                Limpiar información
+            </button>
+        </div>
+    </form>
+</mat-card>

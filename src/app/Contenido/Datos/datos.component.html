@@ -1,50 +1,43 @@
-<div class="overlay" *ngIf="!load">
-    <div class="spinner ">
-        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
-      </div>
-</div>
-<h1 *ngIf="load" style="background: #f7f5f5; font-weight: bold; padding: 15px; 
-border-left:8px solid #0099ff; border-right:8px solid #ff00a2; 
-border-top-left-radius:8px; border-bottom-left-radius:8px;"> ¡POSTÚLATE AQUÍ! </h1>
-<mat-card *ngIf="load">
-    <form (submit)="onSavePostulante(postForm)" #postForm="ngForm" id="formulario">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<h1 class="title" *ngIf="!isLoading && mode === 'create'"> ¡REGÍSTRATE AQUÍ!</h1>
+<h1 class="title" *ngIf="!isLoading && mode === 'edit'"> ¡MODIFICA AQUÍ LOS DATOS DE LA POSTULACIÓN SELECCIONADA!</h1>
+
+<mat-card> 
+    <form [formGroup]="form" (submit)="onSavePostulante()" *ngIf="!isLoading" id="formulario">
         <mat-form-field>
-            <input matInput type="text" name="nombre" [ngModel]="postulante?.nombre" required #nombre="ngModel" placeholder="Nombre(s)">
-            <mat-error *ngIf="nombre.invalid">Ingresa tu nombre(s)</mat-error>
+            <input matInput type="text" formControlName="nombre" placeholder="Nombre(s)">
+            <mat-error *ngIf="form.get('nombre').invalid">Ingresa tu nombre(s)</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" name="apellidoP"[ngModel]="postulante?.apellidoP"  required #apellidoP="ngModel" placeholder="Apellido Paterno">
-            <mat-error *ngIf="apellidoP.invalid">Ingresa tu apellido paterno</mat-error>
+            <input matInput type="text" formControlName="apellidoP" placeholder="Apellido Paterno">
+            <mat-error *ngIf="form.get('apellidoP').invalid">Ingresa tu apellido paterno</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" name="apellidoM" [ngModel]="postulante?.apellidoM"  required #apellidoM="ngModel" placeholder="Apellido Materno">
-            <mat-error *ngIf="apellidoM.invalid">Ingresa tu apellido materno</mat-error>
+            <input matInput type="text" formControlName="apellidoM"  placeholder="Apellido Materno">
+            <mat-error *ngIf="form.get('apellidoM').invalid">Ingresa tu apellido materno</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" name="correo" [ngModel]="postulante?.correo" required #correo="ngModel" placeholder="Correo Electrónico">
-            <mat-error *ngIf="correo.invalid">Ingresa tu correo Electrónico</mat-error>
+            <input matInput type="text" formControlName="correo" placeholder="Correo Electrónico">
+            <mat-error *ngIf="form.get('correo').invalid">Ingresa tu correo Electrónico</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="password" name="contrasena" [ngModel]="postulante?.contrasena" required #contrasena="ngModel" placeholder="Contraseña">
-            <mat-error *ngIf="contrasena.invalid">Ingresa tu contraseña </mat-error>
+            <input matInput type="password" formControlName="contrasena"  maxlength="8" placeholder="Contraseña">
+            <mat-error *ngIf="form.get('contrasena').invalid">Ingresa tu contraseña </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" name="curp" [ngModel]="postulante?.curp" maxlength="13" required #curp="ngModel" placeholder="CURP">
-            <mat-error *ngIf="curp.invalid">Ingresa tu CURP</mat-error>
+            <input matInput type="text" formControlName="curp" maxlength="13" placeholder="CURP">
+            <mat-error *ngIf="form.get('curp').invalid">Ingresa tu CURP</mat-error>
         </mat-form-field>
         <mat-form-field>
-        <textarea matInput rows="3" name="domicilio" [ngModel]="postulante?.domicilio" required #domicilio="ngModel" placeholder="Dirección">
+        <textarea matInput rows="3" formControlName="domicilio"  placeholder="Dirección">
             </textarea>
-        <mat-error *ngIf="domicilio.invalid">Ingresa tu dirección</mat-error>
+        <mat-error *ngIf="form.get('domicilio').invalid">Ingresa tu dirección</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="tel" name="telefono" [ngModel]="postulante?.telefono" maxlength="10" required #telefono="ngModel" placeholder="Teléfono">
-            <mat-error *ngIf="telefono.invalid">Ingresa tu número de teléfono</mat-error>
+            <input matInput type="number" formControlName="telefono" maxlength="10" placeholder="Teléfono">
+            <mat-error *ngIf="form.get('telefono').invalid">Ingresa tu número de teléfono</mat-error>
         </mat-form-field>
         <div>
-            <button mat-raised-button color="primary" type="submit" (click)="Regresar()">
-                Regresar
-            </button>
             <button mat-raised-button color="accent" type="submit">
                 Guardar información
             </button>

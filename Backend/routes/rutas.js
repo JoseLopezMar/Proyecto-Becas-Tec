@@ -68,7 +68,6 @@ router.post('/postulante', (req, res, next) => {
     const postulante = new Postulante({
         contrasena: bcrypt.hashSync(req.body.contrasena, salt),
         correo: req.body.correo,
-        tipoUsuario: 'Admin',
         nombre: req.body.nombre,
         apellidoP: req.body.apellidoP,
         apellidoM: req.body.apellidoM,
@@ -198,8 +197,6 @@ router.post('/postulacion',(req, res, next) => {
     const postulacion = new Postulacion({
         idPostulante: req.body.idPostulante, 
         idBeca: req.body.idBeca,
-        postulante: req.body.postulante,
-        beca: req.body.beca,
         ingresoMensual: req.body.ingresoMensual,
         promedioEscolar: req.body.promedioEscolar,
         gradoActual: req.body.gradoActual,
@@ -221,8 +218,6 @@ router.put('/postulacion/:id', (req, res, next) => {
         _id: req.body.id,
         idPostulante: req.body.idPostulante, 
         idBeca: req.body.idBeca,
-        postulante: req.body.postulante,
-        beca: req.body.beca,
         ingresoMensual: req.body.ingresoMensual,
         promedioEscolar: req.body.promedioEscolar,
         gradoActual: req.body.gradoActual,

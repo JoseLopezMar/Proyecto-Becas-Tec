@@ -22,7 +22,8 @@ export class EncabezadoComponent implements OnInit{
         } else if (sessionStorage.getItem('tipoUsuario') === 'Postulante') {
             this.menuOptions.push(
                 {ruta: '/inicio/inicio', imagen: '../../assets/images/Inicio.png'},
-                //{ruta: '/inicio/postulantes/create', nombre: 'Nuevo postulante'}
+                {ruta: '/inicio/postulaciones/create', nombre: 'Postularse'},
+                {ruta: '/inicio/postulaciones', nombre: 'Postulaciones'},
                 {ruta: '/login', imagen: '../../assets/images/cerrar-sesion.png'},
             );
         }
